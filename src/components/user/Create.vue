@@ -2,7 +2,7 @@
   <div>
     <div class="col-md-12 form-wrapper">
       <h2>Cadastrar</h2>
-      <form id="create-post-form" @submit.prevent="createCustomer">
+      <form id="create-post-form" @submit.prevent="createUser">
         <div class="form-group col-md-12">
           <label for="title"> Nome </label>
           <input
@@ -63,27 +63,25 @@ import router from "../../router";
 export default {
   data() {
     return {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-      address: "",
-      description: "",
+      name: "",
+      age: "",
+      addreess: "",
+      girhub: "",
     };
   },
   methods: {
-    createCustomer() {
-      let customerData = {
+    createUser() {
+      let userData = {
         name: this.name,
         age: this.age,
         address: this.address,
         github: this.github,
       };
-      this.__submitToServer(customerData);
+      this.__submitToServer(userData);
     },
     __submitToServer(data) {
-      axios.post(`${server.baseURL}/user/create`, data).then((data) => {
-        router.push({ name: "home" });
+      axios.post(`http://localhost:3000/users`, data).then((data) => {
+        console.log(data.data), router.push({ name: "home" });
       });
     },
   },

@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="text-center">
       <h1>Listagem de pessoas cadastradas</h1>
-      <div v-if="customers.length === 0"></div>
+      <div v-if="users.length === 0"></div>
     </div>
 
     <div class="">
@@ -16,22 +16,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="customer in customers" :key="customer._id">
-            <td>{{ customer.name }}</td>
-            <td>{{ customer.age }}</td>
-            <td>{{ customer.address }}</td>
-            <td>{{ customer.github }}</td>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.name }}</td>
+            <td>{{ user.age }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.github }}</td>
             <td>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" style="margin-bottom: 20px;">
                   <router-link
-                    :to="{ name: 'Edit', params: { id: customer._id } }"
+                    :to="{ name: 'Edit', params: { id: user.id } }"
                     class="btn btn-sm btn-outline-secondary"
                     >Edit Customer
                   </router-link>
                   <button
                     class="btn btn-sm btn-outline-secondary"
-                    v-on:click="deleteCustomer(customer._id)"
+                    v-on:click="deleteUser(user.id)"
                   >
                     Deletar
                   </button>
@@ -44,32 +44,35 @@
     </div>
   </div>
 </template>
+
 <script>
-import { server } from "../helper";
-import axios from "axios";
-export default {
-  data() {
-    return {
-      customers: [],
-    };
-  },
-  created() {
-    this.fetchCustomers();
-  },
-  methods: {
-    fetchCustomers() {
-      axios
-        .get(`${server.baseURL}/customer/customers`)
-        .then((data) => (this.customers = data.data));
+  import { server } from "../helper";
+  import axios from "axios";
+  export default {
+    data() {
+      return {
+        users: [],
+      };
     },
-    deleteCustomer(id) {
-      axios
-        .delete(`${server.baseURL}/customer/delete?customerID=${id}`)
-        .then((data) => {
-          console.log(data);
-          window.location.reload();
-        });
+
+    created() {
+      this.getAllUsers();
     },
-  },
-};
+
+    methods: {
+      getAllUsers() {
+        axios
+          .get(`${server.baseURL}/users`)
+          .then((data) => (this.users = data.data));
+      },
+      deleteUser(id) {
+        axios
+          .delete(`${server.baseURL}/users/${id}`)
+          .then((data) => {
+            console.log(data);
+            window.location.reload();
+          });
+      },
+    },
+  };
 </script>
