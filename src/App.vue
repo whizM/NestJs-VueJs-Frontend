@@ -31,7 +31,7 @@
 }
 
 .form-wrapper {
-  width: 500px;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: 0 auto; 
 }
 </style>
