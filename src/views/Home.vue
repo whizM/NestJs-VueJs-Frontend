@@ -27,7 +27,7 @@
                   <router-link
                     :to="{ name: 'Edit', params: { id: user.id } }"
                     class="btn btn-sm btn-outline-secondary"
-                    >Edit Customer
+                    >Editar
                   </router-link>
                   <button
                     class="btn btn-sm btn-outline-secondary"
@@ -46,33 +46,35 @@
 </template>
 
 <script>
-  import { server } from "../helper";
-  import axios from "axios";
-  export default {
-    data() {
-      return {
-        users: [],
-      };
-    },
+import { server } from "../helper";
+import axios from "axios";
+export default {
+  data() {
+    return {
+      users: [],
+    };
+  },
 
-    created() {
-      this.getAllUsers();
-    },
+  created() {
+    this.getAllUsers();
+  },
 
-    methods: {
-      getAllUsers() {
-        axios
-          .get(`${server.baseURL}/users`)
-          .then((data) => (this.users = data.data));
-      },
-      deleteUser(id) {
-        axios
-          .delete(`${server.baseURL}/users/${id}`)
-          .then((data) => {
-            console.log(data);
-            window.location.reload();
-          });
-      },
+  methods: {
+    getAllUsers() {
+      axios
+        .get(`http://localhost:3000/users`)
+        .then((data) => {
+          this.users = data.data
+        });
     },
-  };
+    deleteUser(id) {
+      axios
+        .delete(`http://localhost:3000/users/${id}`)
+        .then((data) => {
+          console.log(data)
+          window.location.reload();
+        });
+    },
+  },
+};
 </script>

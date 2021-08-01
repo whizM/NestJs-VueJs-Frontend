@@ -9,13 +9,13 @@
     </h4>
     <div class="col-md-12 form-wrapper">
       <h2>Editar usuario</h2>
-      <form id="create-post-form" @submit.prevent="editCustomer">
+      <form id="create-post-form" @submit.prevent="editUser">
         <div class="form-group col-md-12">
           <label for="title"> Name </label>
           <input
             type="text"
             id="name"
-            v-model="customer.name"
+            v-model="users.name"
             name="title"
             class="form-control"
             placeholder="Nome"
@@ -26,7 +26,7 @@
           <input
             type="text"
             id="age"
-            v-model="customer.age"
+            v-model="users.age"
             name="title"
             class="form-control"
             placeholder="Idade"
@@ -37,7 +37,7 @@
           <input
             type="text"
             id="address"
-            v-model="customer.address"
+            v-model="users.address"
             name="title"
             class="form-control"
             placeholder="Endereço"
@@ -48,7 +48,7 @@
           <input
             type="text"
             id="github"
-            v-model="customer.github"
+            v-model="users.github"
             name="title"
             class="form-control"
             placeholder="Githuib"
@@ -70,36 +70,32 @@ export default {
   data() {
     return {
       id: 0,
-      customer: {},
+      users: {},
     };
   },
   created() {
     this.id = this.$route.params.id;
-    this.getCustomer();
+    this.getUser();
   },
   methods: {
-    editCustomer() {
-      let customerData = {
-        first_name: this.customer.first_name,
-        last_name: this.customer.last_name,
-        email: this.customer.email,
-        phone: this.customer.phone,
-        address: this.customer.address,
-        description: this.customer.description,
+    editUser() {
+      let body = {
+        name: this.users.name,
+        age: this.users.age,
+        address: this.users.address,
+        github: this.users.github,
       };
+      console.log(body)
       axios
-        .put(
-          `${server.baseURL}/customer/update?customerID=${this.id}`,
-          customerData
-        )
+        .put(`http://localhost:3000/users/${this.id}`, body)
         .then((data) => {
           router.push({ name: "home" });
         });
     },
-    getCustomer() {
+    getUser() {
       axios
-        .get(`${server.baseURL}/customer/customer/${this.id}`)
-        .then((data) => (this.customer = data.data));
+        .get(`http://localhost:3000/users/${this.id}`)
+        .then((data) => (this.users = data.data));
     },
     navigate() {
       router.go(-1);
