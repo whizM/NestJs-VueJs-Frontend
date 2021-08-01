@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import HomeComponent from "@/views/Home";
-import EditComponent from "@/components/user/Edit";
-import CreateComponent from "@/components/user/Create";
+import HomeComponent from "@/views/Home.vue";
+import EditComponent from "@/components/user/Edit.vue";
+import CreateComponent from "@/components/user/Create.vue";
 Vue.use(Router);
 export default new Router({
   mode: "history",
