@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="col-md-12 form-wrapper">
-      <h2>Cadastrar Pessoa</h2>
+      <h2>Cadastrar Usuário</h2>
       <form id="create-post-form" @submit.prevent="createUser">
         <div class="form-group d-flex">
           <div id="create-post-title" class="col-md-8">
@@ -12,7 +12,6 @@
               v-model="name"
               name="title"
               class="form-control"
-              placeholder="Fernando Melo"
             />
           </div>
             <div class="col-md-4">
@@ -23,7 +22,6 @@
                 v-model="age"
                 name="title"
                 class="form-control"
-                placeholder="Idade"
               />
             </div>
         </div>
@@ -37,10 +35,8 @@
               v-model="cep"
               name="title"
               class="form-control"
-              placeholder="00000-000"
             />
           </div>
-
           <div id="create-post-title" class="col-md-1 d-flex">
             <button class="btn btn-success" type="button" v-on:click="getCep">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -48,7 +44,6 @@
               </svg>
             </button>
           </div>
-
           <div id="create-post-title" class="col-md-3">
             <label for="title"> UF </label>
             <input
@@ -57,10 +52,8 @@
               v-model="address.uf"
               name="title"
               class="form-control"
-              placeholder="SP"
             />
           </div>
-          
         </div>
         
         <div class="form-group d-flex">
@@ -72,7 +65,6 @@
               v-model="address.logradouro"
               name="title"
               class="form-control"
-              placeholder="Logradouro"
             />
           </div>
           <div id="create-post-title" class="col-md-4">
@@ -83,7 +75,6 @@
               v-model="address.bairro"
               name="title"
               class="form-control"
-              placeholder="Bairro"
             />
           </div>
           <div id="create-post-title" class="col-md-4">
@@ -94,21 +85,19 @@
               v-model="address.localidade"
               name="title"
               class="form-control"
-              placeholder="Cidade"
             />
           </div>
         </div>
         
         <div class="form-group d-flex">
           <div id="create-post-title" class="col-md-8">
-            <label for="title"> Username GitHub </label>
+            <label for="title"> GitHub </label>
             <input
               type="text"
               id="github"
               v-model="github"
               name="title"
               class="form-control"
-              placeholder="vue"
             />
           </div>
 
@@ -128,26 +117,31 @@
               v-model="githubId"
               name="title"
               class="form-control"
-              placeholder="001101011"
             />
           </div>
           
         </div>
+        <div v-if=" avatar_url ">
+          <div class="form-group d-flex">
+            <div id="create-post-title" class="col-md-2">
+              <img class="card-image-top" :src="avatar_url" />
+            </div>
+            <div>
+              <div class="col-md-12 d-flex flex-column align-items-start">
+                <label class="m-0" for="title" id="github"> Nome:&nbsp;<strong>{{  nameUser  }}</strong></label>
+                <label class="m-0" for="title" id="github"> Descrição:&nbsp;<strong>{{  bio  }}</strong></label>
+                <label class="m-0" for="title" id="github"> Descrição:</label>
 
-        <div class="form-group d-flex">
-          <div id="create-post-title" class="col-md-2">
-            <img class="card-image-top" :src="avatar_url" />
+                <ul id="create-list-repo">
+                  <li v-for="repo in repos" :key="repo.id">
+                    <span class="m-0" id="github">Name:&nbsp;<strong>{{  repo.name  }}</strong></span>
+                    <span class="m-0" id="github">Descrição:&nbsp;<strong>{{  repo.full_name  }}</strong></span>
+                    <span class="m-0" id="github">Linguagem:&nbsp;<strong>{{  repo.language  }}</strong></span>
+                  </li>
+                </ul>
+              </div>  
+            </div>
           </div>
-          <div>
-            <div id="create-post-title" class="col-md-8 d-flex flex-row align-items-center">
-              <label for="title" id="github"> Login: <strong>{{ github }}</strong></label>
-              
-              <ul v-for="repo in repos" :key="repo.id">
-                <label for="title" id="github"> Repositórios: <strong>{{ repo[i].full_name }}</strong></label>
-              </ul>
-            </div>  
-          </div>
-          
         </div>
 
         <div class="form-group col-md-4 pull-right">
@@ -171,29 +165,41 @@
         github: "",
         address: {},
         githubId: "",
+        nameUser: "",
         avatar_url: "",
-        login: "",
-        repos: [],
+        bio: "",
+        repos: {},
       };
     },
     methods: {
       
       getCep() {
-        axios.get(`https://viacep.com.br/ws/${parseInt(this.cep)}/json/`).then((data) => {
-          this.address = data.data;
+        axios.get(`https://viacep.com.br/ws/${parseInt(this.cep)}/json/`).then((response) => {
+          this.address = response.data;
         });
       },
 
       getGithub() {
-        axios.get(`https://api.github.com/search/users?q=${this.github}`).then((data) => {
-          console.log(data.data)
-          this.githubId = data.data.items[0].id;
-          this.avatar_url = data.data.items[0].avatar_url;
-          this.login = data.data.items[0].login;
-          const repos = data.data.items[0].repos_url
-          axios.get(`${repos}`).then((data) => {
-            console.log(data.data)
-            this.repos = data
+        axios.get(`https://api.github.com/users/${this.github}`).then((response) => {
+          console.log(response.data)
+          this.githubId = response.data.id
+          this.nameUser = response.data.name
+          this.avatar_url = response.data.avatar_url
+          this.bio = response.data.bio
+          const repos = response.data.repos_url 
+          
+          axios.get(`https://api.github.com/users/${this.github}/repos`).then((response, i) => {
+            const arrRepos = []
+            response.data.forEach(item => {
+              var body = {
+                  name: item.name,
+                  full_name: item.full_name,
+                  id: item.id,
+                  language: item.language == null ? "" : item.language,
+              }
+              arrRepos.push(body)
+            })
+          this.repos = arrRepos
           })
           
         });
@@ -209,9 +215,14 @@
           city: this.address.localidade,
           state: this.address.uf,
           github: this.github,
+          githubId: this.githubId,
+          nameUser: this.nameUser,
+          avatar_url: this.avatar_url,
+          bio: this.bio
         };
         this.__submitToServer(userData);
       },
+
       __submitToServer(data) {
         axios.post(`http://localhost:3000/users`, data).then((data) => {
           console.log(data.data), router.push({ name: "home" });
@@ -227,7 +238,7 @@
     padding: 10px 0;
   }
 
-  #create-post-form label {
+  #create-post-form label,span {
     color: #808080;
     display: flex;
   }
@@ -245,6 +256,30 @@
     width: 100px;
     height: 100px;
     border-radius: 5px;
+  }
+
+  #create-post-form ul {
+    margin: 0;
+    padding: 10px;
+  }
+
+  #create-post-form li {
+    width: 490px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+    background: #c3c3c3;
+    list-style-type: none;
+    cursor: pointer;
+    transition: width 0.5s;
+  }
+
+  #create-post-form li:hover {
+    width: 500px;
+  }
+
+  #create-post-form input {
+    color: #808080;
   }
 
 </style>
