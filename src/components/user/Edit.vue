@@ -1,12 +1,5 @@
 <template>
   <div>
-    <h4 class="text-center mt-20">
-      <small>
-        <button class="btn btn-success" v-on:click="navigate()">
-          todos
-        </button>
-      </small>
-    </h4>
     <div class="col-md-12 form-wrapper">
       <h2>Editar Usuário</h2>
       <form id="create-post-form" @submit.prevent="editUser">
@@ -121,9 +114,9 @@
           </div>
           <div>
             <div class="col-md-12 d-flex flex-column align-items-start">
-              <label class="m-0" for="title" id="nameUser"> Nome:&nbsp;<strong>{{  users.nameUser  }}</strong></label>
-              <label class="m-0" for="title" id="bio"> Descrição:&nbsp;<strong>{{  users.bio  }}</strong></label>
-              <label class="m-0" for="title" id="desc"> Descrição:</label>
+              <label class="m-0" for="title" id="nameUser"> Nome:&nbsp;<strong>{{  users.nameUser }}</strong></label>
+              <label class="m-0" for="title" id="bio"> Descrição:&nbsp;<strong>{{  users.bio }}</strong></label>
+              <label class="m-0" for="title" id="desc"> Repositórios:</label>
               <ul id="create-list-repo">
                   <li v-for="repo in repos" :key="repo.id">
                     <span class="m-0" id="github">Name:&nbsp;<strong>{{  repo.name  }}</strong></span>
@@ -135,8 +128,9 @@
           </div>
         </div>
 
-        <div class="form-group col-md-4 pull-right">
-          <button class="btn btn-success" type="submit">Editar</button>
+        <div class="form-group col-md-4 pull-right d-flex">
+          <button class="btn btn-success m-1" type="submit">Editar</button>
+          <button class="btn btn-success m-1" v-on:click="navigate()">Cancelar</button>
         </div>
       </form>
     </div>

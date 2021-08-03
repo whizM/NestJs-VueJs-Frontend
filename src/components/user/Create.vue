@@ -130,7 +130,7 @@
               <div class="col-md-12 d-flex flex-column align-items-start">
                 <label class="m-0" for="title" id="github"> Nome:&nbsp;<strong>{{  nameUser  }}</strong></label>
                 <label class="m-0" for="title" id="github"> Descrição:&nbsp;<strong>{{  bio  }}</strong></label>
-                <label class="m-0" for="title" id="github"> Descrição:</label>
+                <label class="m-0" for="title" id="github"> Repositórios::</label>
 
                 <ul id="create-list-repo">
                   <li v-for="repo in repos" :key="repo.id">
@@ -216,9 +216,9 @@
           state: this.address.uf,
           github: this.github,
           githubId: this.githubId,
-          nameUser: this.nameUser,
+          nameUser: this.nameUser == null ? "" : this.nameUser,
           avatar_url: this.avatar_url,
-          bio: this.bio
+          bio: this.bio == null ? "" : this.bio
         };
         this.__submitToServer(userData);
       },

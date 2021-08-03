@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Lista de Pessoas</router-link> |
+      <router-link to="/">Usuários</router-link> |
       <router-link to="/create">Cadastro</router-link>
     </div>
     <router-view />
